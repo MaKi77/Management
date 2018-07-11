@@ -2,9 +2,11 @@ package com.api.networkmanagement;
 
 public class CardDTO {
 	private int id;
-	private int typId;
+	private int typeId;
 	private String identifier;
 	private String type;
+	private int serialNumber;
+	private int partNumber;
 	
 	public int getId() {
 		return id;
@@ -13,12 +15,12 @@ public class CardDTO {
 		this.id = id;
 	}
 	
-	public int getTypId() {
-		return typId;
+	public int getTypeId() {
+		return typeId;
 	}
 	
-	public void setTypId(int typId) {
-		this.typId = typId;
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 	
 	public String getIdentifier() {
@@ -33,5 +35,23 @@ public class CardDTO {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public int getSerialNumber() {
+		return serialNumber;
+	}
+	
+	public void setSerialNumber(int serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	
+	public int getPartNumber() {
+		return partNumber;
+	}
+	
+	public void setPartNumber(int partNumber) {
+		this.partNumber = partNumber;
+	}
+	
+	
 }
 

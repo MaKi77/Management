@@ -72,7 +72,7 @@ public class DeviceResource {
 	public Response createDevice(DeviceDTO device) {
 		DeviceEntity deviceEntity = deviceMapper.mapToEntity(device);
 		String id = String.valueOf(repository.save(deviceEntity));
-		repository.assignIdentifier(deviceEntity);
+		deviceEntity.assignIdentifiers(repository.queryMinAvailableTypeId(deviceEntity));
 		notificationService.notifySubsystems("CREATE: " + id);
 		return Response.ok()
 				.entity(id)

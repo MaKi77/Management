@@ -1,5 +1,7 @@
 package com.rest.domain.device.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,8 @@ public class CardEntity {
 	private String identifier;
 	private CardType type;
 	private int typeId;
+	private int serialNumber;
+	private int partNumber;
 	
 	
 	public int getId() {
@@ -43,23 +47,75 @@ public class CardEntity {
 		this.typeId = typeId;
 	}
 	
-	public void updateCard(CardEntity cardEntity) {
-		this.identifier = cardEntity.getIdentifier();
-		this.type = cardEntity.getType();
+	public int getSerialNumber() {
+		return serialNumber;
+	}
+	
+	public void setSerialNumber(int serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	
+	public int getPartNumber() {
+		return partNumber;
+	}
+	
+	public void setPartNumber(int partNumber) {
+		this.partNumber = partNumber;
+	}
+	
+	public void assignIdentifierForCard(String deviceIdentifier, int typeId) {
+		setIdentifier(deviceIdentifier + ":" + type + ":" + typeId);
+		setTypeId(typeId);
+	}
+	
+	public void updateCard(CardEntity cardEntity) {	
+		if(!isValid(cardEntity)) {
+			throw new IllegalArgumentException("Wrong indentifier, type or typeId for this device");
+		}
+		
+		serialNumber = cardEntity.getSerialNumber();
+		partNumber = cardEntity.getPartNumber();
+	}
+	
+	private boolean isValid(CardEntity cardEntity) {
+		return hasTheSameType(cardEntity)
+				&& hasTheSameTypeId(cardEntity)
+				&& hasTheSameIdentfier(cardEntity);
+	}
+	
+	boolean hasTheSameType(CardEntity cardEntity) {
+		return cardEntity.getType() == this.getType();
+	}
+	
+	boolean hasTheSameTypeId(CardEntity cardEntity) {
+		return cardEntity.getTypeId() == this.getTypeId();
+	}
+	
+	boolean hasTheSameIdentfier(CardEntity cardEntity) {
+		return cardEntity.getIdentifier().equals(this.getIdentifier());
 	}
 	
 	@Override
 	public boolean equals(Object other) {
-		if (other == null) 
+		if (other == null) { 
 			return false;
-	    if (other == this) 
+		} if (other == this) { 
 	    	return true;
-	    if (!(other instanceof CardEntity)) 
+		} if (!(other instanceof CardEntity)) {
 	    	return false;
+		}
 	    CardEntity otherCardEntity = (CardEntity)other;
-	    if(otherCardEntity.getId() == this.getId())
+	    if(otherCardEntity.getIdentifier() == null) {
+	    	return false;
+	    } if(otherCardEntity.getIdentifier().equals(getIdentifier())) {
 	    	return true;
+	    }
 	    return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(identifier);
 	}
 	
 }

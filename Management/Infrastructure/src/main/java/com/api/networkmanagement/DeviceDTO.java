@@ -7,6 +7,8 @@ public class DeviceDTO {
 	private int typeId;
 	private String identifier;
 	private String type;
+	private int serialNumber;
+	private int partNumber;
 	private List<CardDTO> connectedCards;
 
 	public int getId() {
@@ -47,6 +49,22 @@ public class DeviceDTO {
 
 	public void setConnectedCards(List<CardDTO> connectedCards) {
 		this.connectedCards = connectedCards;
+	}
+	
+	public int getSerialNumber() {
+		return serialNumber;
+	}
+	
+	public void setSerialNumber(int serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	
+	public int getPartNumber() {
+		return partNumber;
+	}
+	
+	public void setPartNumber(int partNumber) {
+		this.partNumber = partNumber;
 	}
 	
 }

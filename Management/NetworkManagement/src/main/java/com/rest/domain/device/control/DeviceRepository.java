@@ -1,6 +1,7 @@
 package com.rest.domain.device.control;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -13,6 +14,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.collections4.map.HashedMap;
+import com.rest.domain.device.entity.CardEntity;
+import com.rest.domain.device.entity.CardType;
 import com.rest.domain.device.entity.DeviceEntity;
 import com.rest.infrastructure.LogInterceptor;
 
@@ -61,14 +65,35 @@ public class DeviceRepository {
 		return LIKE_WILDCARD + attributeValue + LIKE_WILDCARD;
 	}
 	
-	public void assignIdentifier(DeviceEntity deviceEntity) {
+	public int queryMinAvailableTypeId(DeviceEntity deviceEntity) {
 		String typeIds = "(SELECT typeId FROM deviceentity WHERE type = " + deviceEntity.getType().ordinal() + ")";
 		BigInteger typeID = (BigInteger) entityManager.createNativeQuery(
 				"SELECT MIN(T1.typeId) + 1 FROM " + 
-				typeIds + " AS T1 LEFT JOIN " + typeIds + 
+				typeIds + 
+				" AS T1 LEFT JOIN " + 
+				typeIds + 
 				"AS T2 ON T2.typeId = T1.typeId + 1 WHERE T2.typeID IS NULL").getSingleResult();
-		deviceEntity.setTypeId(typeID.intValue());
-		deviceEntity.setIdentifier(deviceEntity.getType().toString() + "_" + typeID.intValue());
+		return typeID.intValue();
 	}
-
+	
+	/*public void assignIdentifiers(DeviceEntity deviceEntity) {
+		deviceEntity.setTypeId(queryMinAvailableTypeId(deviceEntity));
+		deviceEntity.setIdentifier(deviceEntity.getType().toString() + "_" + deviceEntity.getTypeId());
+		
+		HashedMap<CardType, Integer> nextCardNumber = new HashedMap<>();
+		CardType cardType;	
+		int cardNumber;
+		Arrays.asList(CardType.values()).forEach(type -> nextCardNumber.put(type, 1));
+		List<CardEntity> cards = deviceEntity.getConnectedCards();
+		for(CardEntity cardEntity : cards) {
+			cardType = cardEntity.getType();
+			cardNumber = nextCardNumber.get(cardType);
+			cardEntity.setIdentifier(deviceEntity.getIdentifier() + ":" + cardType + ":" + cardNumber); 
+			nextCardNumber.put(cardType, cardNumber + 1);
+		}
+	}
+	
+	public void updateIdentifiers(DeviceEntity deviceEntity) {
+	
+	}*/
 }

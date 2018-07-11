@@ -3,7 +3,11 @@ package com.rest.domain.device.entity;
 import java.util.Arrays;
 
 public enum DeviceType {
-	ROUTER, MODEM, SWITCHER, REAPEATER, BRIDGE;
+	ROUTER, 
+	MODEM, 
+	SWITCHER, 
+	REPEATER, 
+	BRIDGE;
 
 	public static DeviceType fromString(String type) {
 		for(DeviceType enumValue : DeviceType.values()) {
