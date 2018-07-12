@@ -75,25 +75,4 @@ public class DeviceRepository {
 				"AS T2 ON T2.typeId = T1.typeId + 1 WHERE T2.typeID IS NULL").getSingleResult();
 		return typeID.intValue();
 	}
-	
-	/*public void assignIdentifiers(DeviceEntity deviceEntity) {
-		deviceEntity.setTypeId(queryMinAvailableTypeId(deviceEntity));
-		deviceEntity.setIdentifier(deviceEntity.getType().toString() + "_" + deviceEntity.getTypeId());
-		
-		HashedMap<CardType, Integer> nextCardNumber = new HashedMap<>();
-		CardType cardType;	
-		int cardNumber;
-		Arrays.asList(CardType.values()).forEach(type -> nextCardNumber.put(type, 1));
-		List<CardEntity> cards = deviceEntity.getConnectedCards();
-		for(CardEntity cardEntity : cards) {
-			cardType = cardEntity.getType();
-			cardNumber = nextCardNumber.get(cardType);
-			cardEntity.setIdentifier(deviceEntity.getIdentifier() + ":" + cardType + ":" + cardNumber); 
-			nextCardNumber.put(cardType, cardNumber + 1);
-		}
-	}
-	
-	public void updateIdentifiers(DeviceEntity deviceEntity) {
-	
-	}*/
 }
