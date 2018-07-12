@@ -185,7 +185,7 @@ public class DeviceEntity {
 	int findMinAvailableTypeIdForCard(CardEntity cardEntity) {
 		Set<Integer> alreadyUsedTypeIds = connectedCards.stream()
 				.filter(card -> card.getType() == cardEntity.getType())
-				.mapToInt(card -> card.getTypeId())
+				.mapToInt(CardEntity::getTypeId)
 				.boxed()
 				.collect(Collectors.toSet());
 
