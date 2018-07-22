@@ -1,9 +1,17 @@
 package com.rest.domain.device.entity;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 
 public enum DeviceType {
-	ROUTER, MODEM, SWITCHER, REPEATER, BRIDGE;
+	
+	ROUTER, 
+	MODEM, 
+	SWITCHER, 
+	REPEATER, 
+	BRIDGE;
+	
+	static final String ILLEGAL_TYPE_MESSAGE = "{0} is not a valid card type. Supported types are: {1}";
 
 	public static DeviceType fromString(String type) {
 		for (DeviceType enumValue : DeviceType.values()) {
@@ -14,13 +22,13 @@ public enum DeviceType {
 
 		if (isTypeNotSupplied(type)) {
 			return null;
-		} else {
-			throw new IllegalArgumentException(
-					type + " is not valid device type. Supported values are: " + Arrays.asList(DeviceType.values()));
 		}
+			
+		throw new IllegalArgumentException(MessageFormat.format(ILLEGAL_TYPE_MESSAGE, type, Arrays.asList(DeviceType.values())));	
 	}
 
 	static private boolean isTypeNotSupplied(String type) {
 		return type == null;
 	}
+	
 };

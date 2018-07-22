@@ -31,10 +31,9 @@ import com.rest.domain.device.entity.DeviceEntity;
 @Produces(MediaType.APPLICATION_JSON)
 @Path(DeviceResource.MAIN_PATH)
 public class DeviceResource {
+	
 	public static final String MAIN_PATH = "/device";
 	private static final String ID = "id";
-	private static final String TYPE = "type";
-	//private static final String ID_PATH = "/{" + TYPE + "}/" + "{" + ID + "}";
 	private static final String ID_PATH = "/{" + ID + "}";
 	
 	@Inject
@@ -54,8 +53,8 @@ public class DeviceResource {
 
 	@Path(ID_PATH)
 	@GET
-	public DeviceDTO getDevice(/*@PathParam(TYPE) String deviceType, */@PathParam(ID) int deviceId) {
-		logger.info("Get device with id: " + deviceId /*+ ", type: " + deviceType*/);
+	public DeviceDTO getDevice(@PathParam(ID) int deviceId) {
+		logger.info("Get device with id: " + deviceId);
 		DeviceEntity foundDevice = repository.getDeviceById(deviceId);
 		return deviceMapper.mapToDTO(foundDevice);
 	}
@@ -102,6 +101,5 @@ public class DeviceResource {
 		return Response.ok()
 				.build();
 	}
-	
 	
 }

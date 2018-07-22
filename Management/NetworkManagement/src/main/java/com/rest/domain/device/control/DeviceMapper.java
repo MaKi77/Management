@@ -14,33 +14,27 @@ public class DeviceMapper {
 	private CardMapper cardMapper;
 
 	public DeviceEntity mapToEntity(DeviceDTO deviceDTO) {
-		DeviceEntity deviceEntity = new DeviceEntity();
-		deviceEntity.setId(deviceDTO.getId());
-		deviceEntity.setIdentifier(deviceDTO.getIdentifier());
-		deviceEntity.setType(DeviceType.fromString(deviceDTO.getType()));
-		deviceEntity.setTypeId(deviceDTO.getTypeId());
-		deviceEntity.setSerialNumber(deviceDTO.getSerialNumber());
-		deviceEntity.setPartNumber(deviceDTO.getPartNumber());
-		deviceEntity.setConnectedCards(deviceDTO.getConnectedCards()
-				.stream()
-				.map(cardMapper::mapToEntity)
-				.collect(Collectors.toList()));
-		return deviceEntity;
+		return DeviceEntity.builder()
+				.withId(deviceDTO.getId())
+				.withIdentifier(deviceDTO.getIdentifier())
+				.withType(DeviceType.fromString(deviceDTO.getType()))
+				.withTypeId(deviceDTO.getTypeId())
+				.withSerialNumber(deviceDTO.getSerialNumber())
+				.withPartNumber(deviceDTO.getPartNumber())
+				.withCards(cardMapper.mapToEntity(deviceDTO.getConnectedCards()))
+				.build();
 	}
 	
 	public DeviceDTO mapToDTO(DeviceEntity deviceEntity) {
-		DeviceDTO deviceDTO = new DeviceDTO();
-		deviceDTO.setId(deviceEntity.getId());
-		deviceDTO.setIdentifier(deviceEntity.getIdentifier());
-		deviceDTO.setType(deviceEntity.getType().toString());
-		deviceDTO.setTypeId(deviceEntity.getTypeId());
-		deviceDTO.setSerialNumber(deviceEntity.getSerialNumber());
-		deviceDTO.setPartNumber(deviceEntity.getPartNumber());
-		deviceDTO.setConnectedCards(deviceEntity.getConnectedCards()
-				.stream()
-				.map(cardMapper::mapToDTO)
-				.collect(Collectors.toList()));
-		return deviceDTO;
+		return DeviceDTO.builder()
+				.withId(deviceEntity.getId())
+				.withIdentifier(deviceEntity.getIdentifier())
+				.withType(deviceEntity.getType().toString())
+				.withTypeId(deviceEntity.getTypeId())
+				.withSerialNumber(deviceEntity.getSerialNumber())
+				.withPartNumber(deviceEntity.getPartNumber())
+				.withCards(cardMapper.mapToDTO(deviceEntity.getConnectedCards()))
+				.build();
 	}
 	
 }
